@@ -1,0 +1,38 @@
+{
+  "manifest_version": 3,
+  "name": "Browser Activity Monitor",
+  "version": "1.0.0",
+  "description": "Monitors browser activity and logs request/response data to SQLite database",
+  "permissions": [
+    "webRequest",
+    "storage",
+    "activeTab",
+    "tabs",
+    "unlimitedStorage",
+    "downloads",
+    "management"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Browser Activity Monitor"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["analytics.html", "analytics.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

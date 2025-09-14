@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browser Activity Monitor - Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        button {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        .console-output {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 5px;
+            font-family: monospace;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Browser Activity Monitor Test Page</h1>
+        
+        <div class="test-section">
+            <h3>1. Network Requests Test</h3>
+            <p>Click these buttons to generate different types of network requests:</p>
+            <button onclick="testGetRequest()">Test GET Request</button>
+            <button onclick="testPostRequest()">Test POST Request</button>
+            <button onclick="testImageRequest()">Test Image Request</button>
+            <button onclick="testJsonRequest()">Test JSON Request</button>
+        </div>
+
+        <div class="test-section">
+            <h3>2. Form Submission Test</h3>
+            <form id="testForm" onsubmit="handleFormSubmit(event)">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <textarea name="message" placeholder="Message" rows="3"></textarea>
+                <button type="submit">Submit Form</button>
+            </form>
+        </div>
+
+        <div class="test-section">
+            <h3>3. User Interaction Test</h3>
+            <p>Click buttons and type in the input to test user interaction tracking:</p>
+            <button onclick="logClick('Button 1')">Click Me 1</button>
+            <button onclick="logClick('Button 2')">Click Me 2</button>
+            <input type="text" placeholder="Type something here..." onkeydown="logKeyPress(event)">
+        </div>
+
+        <div class="test-section">
+            <h3>4. Console Log Test</h3>
+            <p>Click to generate console messages:</p>
+            <button onclick="testConsoleLogs()">Generate Console Messages</button>
+            <div class="console-output" id="consoleOutput">
+                Console output will appear here...
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>5. Page Visibility Test</h3>
+            <p>Switch tabs or minimize the browser to test visibility change detection.</p>
+            <button onclick="testVisibility()">Test Visibility Change</button>
+        </div>
+    </div>
+
+    <script>
+        // Test functions
+        function testGetRequest() {
+            fetch('https://httpbin.org/get?test=1')
+                .then(response => response.json())
+                .then(data => console.log('GET request successful:', data))
+                .catch(error => console.error('GET request failed:', error));
+        }
+
+        function testPostRequest() {
+            fetch('https://httpbin.org/post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ test: 'data', timestamp: Date.now() })
+            })
+            .then(response => response.json())
+            .then(data => console.log('POST request successful:', data))
+            .catch(error => console.error('POST request failed:', error));
+        }
+
+        function testImageRequest() {
+            const img = new Image();
+            img.onload = () => console.log('Image loaded successfully');
+            img.onerror = () => console.error('Image failed to load');
+            img.src = 'https://httpbin.org/image/png';
+            document.body.appendChild(img);
+        }
+
+        function testJsonRequest() {
+            fetch('https://jsonplaceholder.typicode.com/posts/1')
+                .then(response => response.json())
+                .then(data => console.log('JSON request successful:', data))
+                .catch(error => console.error('JSON request failed:', error));
+        }
+
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            console.log('Form submitted:', data);
+            alert('Form submitted! Check the extension for captured data.');
+        }
+
+        function logClick(buttonName) {
+            console.log(`Button clicked: ${buttonName}`);
+            updateConsoleOutput(`Button clicked: ${buttonName}`);
+        }
+
+        function logKeyPress(event) {
+            console.log(`Key pressed: ${event.key}`);
+            updateConsoleOutput(`Key pressed: ${event.key}`);
+        }
+
+        function testConsoleLogs() {
+            console.log('This is a test log message');
+            console.warn('This is a test warning message');
+            console.error('This is a test error message');
+            updateConsoleOutput('Console messages generated - check browser console');
+        }
+
+        function testVisibility() {
+            document.hidden ? console.log('Page is hidden') : console.log('Page is visible');
+            updateConsoleOutput('Visibility test triggered');
+        }
+
+        function updateConsoleOutput(message) {
+            const output = document.getElementById('consoleOutput');
+            const timestamp = new Date().toLocaleTimeString();
+            output.innerHTML += `[${timestamp}] ${message}\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        // Override console methods to show output on page
+        const originalLog = console.log;
+        const originalWarn = console.warn;
+        const originalError = console.error;
+
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            updateConsoleOutput('LOG: ' + args.join(' '));
+        };
+
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            updateConsoleOutput('WARN: ' + args.join(' '));
+        };
+
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            updateConsoleOutput('ERROR: ' + args.join(' '));
+        };
+
+        // Page load message
+        console.log('Test page loaded - Browser Activity Monitor should be capturing data');
+    </script>
+</body>
+</html>

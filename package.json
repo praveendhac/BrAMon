@@ -1,0 +1,31 @@
+{
+  "name": "browser-activity-monitor",
+  "version": "1.0.0",
+  "description": "Chrome extension that monitors browser activity and logs request/response data to SQLite database",
+  "main": "background.js",
+  "scripts": {
+    "build": "echo 'No build process needed for Chrome extension'",
+    "test": "echo 'Open test.html in Chrome to test the extension'",
+    "package": "zip -r browser-activity-monitor.zip . -x '*.git*' 'node_modules/*' '*.md' 'package*.json'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "browser-monitoring",
+    "network-requests",
+    "sqlite",
+    "web-request",
+    "activity-tracking"
+  ],
+  "author": "Browser Activity Monitor",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/browser-activity-monitor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/browser-activity-monitor/issues"
+  },
+  "homepage": "https://github.com/your-username/browser-activity-monitor#readme"
+}
