@@ -1,4 +1,4 @@
-# Browser Activity Monitor Chrome Extension
+# Browser Activity Monitor (BrAMon) Chrome Extension
 
 A comprehensive Chrome extension that monitors browser activity across all windows and tabs, logging detailed request/response information to an SQLite database.
 
